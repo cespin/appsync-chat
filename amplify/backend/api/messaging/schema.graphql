@@ -24,6 +24,3 @@ enum MessageState {
     R # READ
     E # DELETED
 }
-
-
-

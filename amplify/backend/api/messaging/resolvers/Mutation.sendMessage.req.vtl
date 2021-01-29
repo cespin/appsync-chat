@@ -1,0 +1,53 @@
+#set( $createdAt = $util.time.nowISO8601() )
+#set( $senderMessage = {
+  "__typename": "Message"
+} )
+#set( $recipientMessage = {
+  "__typename": "Message"
+} )
+#set( $senderMessage.createdAt = $createdAt )
+#set( $recipientMessage.createdAt = $createdAt )
+#set( $recipientMessage.updatedAt = $createdAt )
+#set( $senderMessage.updatedAt = $createdAt )
+
+
+## [Start] Determine request authentication mode **
+#if( $util.isNullOrEmpty($authMode) && !$util.isNull($ctx.identity) && !$util.isNull($ctx.identity.sub) && !$util.isNull($ctx.identity.issuer) && !$util.isNull($ctx.identity.username) && !$util.isNull($ctx.identity.claims) && !$util.isNull($ctx.identity.sourceIp) && !$util.isNull($ctx.identity.defaultAuthStrategy) )
+  #set( $authMode = "userPools" )
+#else
+  $util.unauthorized()
+#end
+
+
+#set( $guestIdentity = "___xamznone____" )
+#set( $senderIdentityValue = $util.defaultIfNull($ctx.identity.claims.get("username"), $util.defaultIfNull($ctx.identity.claims.get("cognito:username"), "___xamznone____")) )
+
+#if( $senderIdentityValue == $guestIdentity )
+  $util.unauthorized()
+#end
+
+
+$util.qr($senderMessage.put("id", "${senderIdentityValue}#${ctx.args.input.recipientSub}"))
+$util.qr($recipientMessage.put("id", "${ctx.args.input.recipientSub}#${senderIdentityValue}"))
+$util.qr($senderMessage.put("recipientSub#createdAt", "${senderIdentityValue}#${createdAt}"))
+$util.qr($recipientMessage.put("recipientSub#createdAt", "${ctx.args.input.recipientSub}#${createdAt}"))
+$util.qr($senderMessage.put("s", "D"))
+$util.qr($recipientMessage.put("s", "U"))
+$util.qr($senderMessage.put("t", "${ctx.args.input}"))
+$util.qr($recipientMessage.put("t", "${ctx.args.input}"))
+$util.qr($senderMessage.put("inboxId", "IX#${senderIdentityValue}"))
+$util.qr($recipientMessage.put("inboxId", "IX#${ctx.args.input.recipientSub}"))
+$util.qr($senderMessage.put("recipientSub", "${ctx.args.input.recipientSub}"))
+$util.qr($recipientMessage.put("recipientSub", "${ctx.args.input.recipientSub}"))
+$util.qr($senderMessage.put("senderSub", "${senderIdentityValue}"))
+$util.qr($recipientMessage.put("senderSub", "${senderIdentityValue}"))
+
+{
+    "version" : "2018-05-29",
+    "operation" : "BatchPutItem",
+    "tables" : {
+        "MessageTable": [
+        $util.dynamodb.toMapValuesJson($senderMessage),
+        $util.dynamodb.toMapValuesJson($recipientMessage)
+    }
+}

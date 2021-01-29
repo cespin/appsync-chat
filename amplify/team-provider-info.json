@@ -1,0 +1,15 @@
+{
+  "master": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-appsyncchat-master-131916-authRole",
+      "UnauthRoleArn": "arn:aws:iam::250036610033:role/amplify-appsyncchat-master-131916-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::250036610033:role/amplify-appsyncchat-master-131916-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-appsyncchat-master-131916-deployment",
+      "UnauthRoleName": "amplify-appsyncchat-master-131916-unauthRole",
+      "StackName": "amplify-appsyncchat-master-131916",
+      "StackId": "arn:aws:cloudformation:us-east-1:250036610033:stack/amplify-appsyncchat-master-131916/81f8b4a0-625e-11eb-996f-0ab512dce13f",
+      "AmplifyAppId": "d27evhvjkbsjul"
+    }
+  }
+}

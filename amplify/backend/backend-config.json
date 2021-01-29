@@ -1,1 +1,10 @@
-{}
+{
+  "auth": {
+    "appsyncchat5a989271": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

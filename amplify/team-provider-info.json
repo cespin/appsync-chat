@@ -10,6 +10,11 @@
       "StackName": "amplify-appsyncchat-master-131916",
       "StackId": "arn:aws:cloudformation:us-east-1:250036610033:stack/amplify-appsyncchat-master-131916/81f8b4a0-625e-11eb-996f-0ab512dce13f",
       "AmplifyAppId": "d27evhvjkbsjul"
+    },
+    "categories": {
+      "auth": {
+        "appsyncchat5a989271": {}
+      }
     }
   }
 }

@@ -24,7 +24,7 @@
     }
   },
   "api": {
-    "messaging": {
+    "appsyncchat": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {

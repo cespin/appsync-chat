@@ -1,4 +1,4 @@
-type Message @model(subscriptions: null)
+type Message @model
 @auth(rules: [
     { allow: owner, operations: [update, read, delete] }
 ])
@@ -16,6 +16,10 @@ type Message @model(subscriptions: null)
 
 type Mutation {
     sendMessage(input: String!, recipientSub: String!): [Message]
+}
+
+type Subscription {
+    onSendMessage(owner: String): Message @aws_subscribe(mutations: ["createMessage", "sendMessage"])
 }
 
 enum MessageState {

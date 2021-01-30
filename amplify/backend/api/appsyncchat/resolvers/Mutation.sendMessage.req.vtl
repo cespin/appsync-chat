@@ -26,8 +26,6 @@
 #end
 $util.qr($senderMessage.put("id", "${senderIdentityValue}#${ctx.args.recipientSub}"))
 $util.qr($recipientMessage.put("id", "${ctx.args.recipientSub}#${senderIdentityValue}"))
-$util.qr($senderMessage.put("recipientSub#createdAt", "${ctx.args.recipientSub}#${createdAt}"))
-$util.qr($recipientMessage.put("recipientSub#createdAt", "${ctx.args.recipientSub}#${createdAt}"))
 $util.qr($senderMessage.put("s", "D"))
 $util.qr($recipientMessage.put("s", "U"))
 $util.qr($senderMessage.put("t", "${ctx.args.input}"))
@@ -44,7 +42,7 @@ $util.qr($recipientMessage.put("senderSub", "${senderIdentityValue}"))
   "version": "2018-05-29",
   "operation": "BatchPutItem",
   "tables": {
-        "Message-aulnewptqngudi6lehyf6jc4si-master": [
+        "Message-rpt37tmpo5gk7hdesagblrhoka-master": [
         $util.dynamodb.toMapValuesJson($senderMessage),
         $util.dynamodb.toMapValuesJson($recipientMessage)
         ]

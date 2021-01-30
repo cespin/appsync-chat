@@ -195,7 +195,7 @@ class RunCognitoAttributeVerificationButton extends React.Component {
 
 const handleClickObserveInbox = () => {
     const subscription = API.graphql(
-        graphqlOperation(subscriptions.onCreateMessage, {owner: prompt("Who am I?")})
+        graphqlOperation(subscriptions.onSendMessage, {owner: prompt("Who am I?")})
     ).subscribe({
         next: ({provider, value}) => console.log("Received:", {provider, value})
     });

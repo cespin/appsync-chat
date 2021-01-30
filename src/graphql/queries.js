@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const getMessage = /* GraphQL */ `
-  query GetMessage($id: ID!, $recipientSub: String!, $createdAt: AWSDateTime!) {
-    getMessage(id: $id, recipientSub: $recipientSub, createdAt: $createdAt) {
+  query GetMessage($id: ID!, $createdAt: AWSDateTime!) {
+    getMessage(id: $id, createdAt: $createdAt) {
       id
       inboxId
       senderSub
@@ -19,7 +19,7 @@ export const getMessage = /* GraphQL */ `
 export const listMessages = /* GraphQL */ `
   query ListMessages(
     $id: ID
-    $recipientSubCreatedAt: ModelMessagePrimaryCompositeKeyConditionInput
+    $createdAt: ModelStringKeyConditionInput
     $filter: ModelMessageFilterInput
     $limit: Int
     $nextToken: String
@@ -27,7 +27,7 @@ export const listMessages = /* GraphQL */ `
   ) {
     listMessages(
       id: $id
-      recipientSubCreatedAt: $recipientSubCreatedAt
+      createdAt: $createdAt
       filter: $filter
       limit: $limit
       nextToken: $nextToken

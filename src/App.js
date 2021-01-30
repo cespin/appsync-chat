@@ -3,11 +3,12 @@ import queryString from 'query-string'
 import Popup from 'react-popup';
 import './App.css';
 import OAuthButton from './OAuthButton';
-import Amplify from '@aws-amplify/core';
+import Amplify, {API, graphqlOperation} from 'aws-amplify';
 import {Auth} from '@aws-amplify/auth'
 import {Hub} from '@aws-amplify/core';
-import {DataStore} from '@aws-amplify/datastore';
-import {Message} from "./models";
+import * as mutations from './graphql/mutations';
+import * as subscriptions from './graphql/subscriptions';
+import {withAuthenticator} from '@aws-amplify/ui-react';
 import awsconfig from './aws-exports';
 
 let urlsIn = awsconfig.oauth.redirectSignIn.split(",");
@@ -193,11 +194,51 @@ class RunCognitoAttributeVerificationButton extends React.Component {
 }
 
 const handleClickObserveInbox = () => {
-    const subscription = DataStore.observe(Message).subscribe(msg => {
-        console.log("Received:", msg.model, msg.opType, msg.element);
+    const subscription = API.graphql(
+        graphqlOperation(subscriptions.onCreateMessage, {owner: prompt("Who am I?")})
+    ).subscribe({
+        next: ({provider, value}) => console.log("Received:", {provider, value})
     });
 
     console.log("Subscription id", subscription);
+}
+
+const handleClickSendMessage = () => {
+    API.graphql(graphqlOperation(mutations.sendMessage, {
+            input: prompt("Type in the message"),
+            recipientSub: prompt("Type in the other user's sub ID")
+        })
+    );
+}
+
+const handleClickSendMessageBeast = () => {
+    const recipient = prompt("Recipient");
+    const myIdentity = prompt("Who am I?");
+    const message = prompt("Message");
+    API.graphql(graphqlOperation(mutations.createMessage, {
+            input: {
+                id: myIdentity + "#" + recipient,
+                inboxId: "IX#" + myIdentity,
+                senderSub: myIdentity,
+                recipientSub: recipient,
+                owner: myIdentity,
+                s: "D",
+                t: message
+            }
+        })
+    );
+    API.graphql(graphqlOperation(mutations.createMessage, {
+            input: {
+                id: recipient + "#" + myIdentity,
+                inboxId: "IX#" + recipient,
+                senderSub: myIdentity,
+                recipientSub: recipient,
+                owner: recipient,
+                s: "U",
+                t: message
+            }
+        })
+    );
 }
 
 class App extends Component {
@@ -269,6 +310,8 @@ class App extends Component {
                     <div>
                         <ChangeCognitoAttributeForm/>
                         <button onClick={handleClickObserveInbox}>Observe Inbox</button>
+                        <button onClick={handleClickSendMessage}>Send Message</button>
+                        <button onClick={handleClickSendMessageBeast}>Send Message (Beast Mode)</button>
                         <RunCognitoAttributeVerificationButton/>
                     </div>
                 </header>
@@ -280,4 +323,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default withAuthenticator(App);

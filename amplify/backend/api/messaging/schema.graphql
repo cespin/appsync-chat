@@ -1,21 +1,21 @@
-type Message @model(subscriptions: { level: public })
+type Message @model(subscriptions: null)
 @auth(rules: [
-    { allow: owner, ownerField: "senderSub" },
-    { allow: owner, ownerField: "recipientSub" }
+    { allow: owner, operations: [update, read, delete] }
 ])
-@key(fields: ["id", "recipientSub", "createdAt"])
-@key(name: "messagesByInbox", fields: ["inboxId", "recipientSub", "createdAt"]) {
+@key(fields: ["id", "createdAt"])
+@key(name: "messagesByInbox", fields: ["inboxId", "createdAt"]) {
     id: ID!
     inboxId: String
     senderSub: String!
     recipientSub: String!
+    owner: String!
     createdAt: AWSDateTime!
     s: MessageState!
     t: String!
 }
 
 type Mutation {
-    sendMessage(input: String!, recipientSub: String!): Boolean
+    sendMessage(input: String!, recipientSub: String!): [Message]
 }
 
 enum MessageState {

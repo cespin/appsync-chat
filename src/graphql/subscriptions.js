@@ -2,52 +2,46 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateMessage = /* GraphQL */ `
-  subscription OnCreateMessage {
-    onCreateMessage {
+  subscription OnCreateMessage($owner: String!) {
+    onCreateMessage(owner: $owner) {
       id
       inboxId
       senderSub
       recipientSub
+      owner
       createdAt
       s
       t
-      _version
-      _deleted
-      _lastChangedAt
       updatedAt
     }
   }
 `;
 export const onUpdateMessage = /* GraphQL */ `
-  subscription OnUpdateMessage {
-    onUpdateMessage {
+  subscription OnUpdateMessage($owner: String!) {
+    onUpdateMessage(owner: $owner) {
       id
       inboxId
       senderSub
       recipientSub
+      owner
       createdAt
       s
       t
-      _version
-      _deleted
-      _lastChangedAt
       updatedAt
     }
   }
 `;
 export const onDeleteMessage = /* GraphQL */ `
-  subscription OnDeleteMessage {
-    onDeleteMessage {
+  subscription OnDeleteMessage($owner: String!) {
+    onDeleteMessage(owner: $owner) {
       id
       inboxId
       senderSub
       recipientSub
+      owner
       createdAt
       s
       t
-      _version
-      _deleted
-      _lastChangedAt
       updatedAt
     }
   }

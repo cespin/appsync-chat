@@ -3,7 +3,17 @@
 
 export const sendMessage = /* GraphQL */ `
   mutation SendMessage($input: String!, $recipientSub: String!) {
-    sendMessage(input: $input, recipientSub: $recipientSub)
+    sendMessage(input: $input, recipientSub: $recipientSub) {
+      id
+      inboxId
+      senderSub
+      recipientSub
+      owner
+      createdAt
+      s
+      t
+      updatedAt
+    }
   }
 `;
 export const createMessage = /* GraphQL */ `
@@ -16,12 +26,10 @@ export const createMessage = /* GraphQL */ `
       inboxId
       senderSub
       recipientSub
+      owner
       createdAt
       s
       t
-      _version
-      _deleted
-      _lastChangedAt
       updatedAt
     }
   }
@@ -36,12 +44,10 @@ export const updateMessage = /* GraphQL */ `
       inboxId
       senderSub
       recipientSub
+      owner
       createdAt
       s
       t
-      _version
-      _deleted
-      _lastChangedAt
       updatedAt
     }
   }
@@ -56,12 +62,10 @@ export const deleteMessage = /* GraphQL */ `
       inboxId
       senderSub
       recipientSub
+      owner
       createdAt
       s
       t
-      _version
-      _deleted
-      _lastChangedAt
       updatedAt
     }
   }

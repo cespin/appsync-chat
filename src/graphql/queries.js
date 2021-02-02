@@ -48,3 +48,35 @@ export const listMessages = /* GraphQL */ `
     }
   }
 `;
+export const messagesByInbox = /* GraphQL */ `
+  query MessagesByInbox(
+    $inboxId: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    messagesByInbox(
+      inboxId: $inboxId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        inboxId
+        senderSub
+        recipientSub
+        owner
+        createdAt
+        s
+        t
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

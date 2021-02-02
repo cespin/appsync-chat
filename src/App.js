@@ -6,6 +6,7 @@ import OAuthButton from './OAuthButton';
 import Amplify, {API, graphqlOperation} from 'aws-amplify';
 import {Auth} from '@aws-amplify/auth'
 import {Hub} from '@aws-amplify/core';
+import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
 import * as subscriptions from './graphql/subscriptions';
 import {withAuthenticator} from '@aws-amplify/ui-react';
@@ -193,9 +194,21 @@ class RunCognitoAttributeVerificationButton extends React.Component {
     }
 }
 
-const handleClickObserveInbox = () => {
+const handleClickListInbox = async () => {
+    const username = await Auth.currentSession().then(userData => userData.getIdToken().decodePayload()['cognito:username']);
+
+    return API.graphql(graphqlOperation(queries.messagesByInbox, {
+            inboxId: "IX#" + username,
+            sortDirection: "DESC"
+        })
+    ).then(result => console.log("Inbox: ", result));
+
+}
+
+const handleClickObserveInbox = async () => {
+    const username = await Auth.currentSession().then(userData => userData.getIdToken().decodePayload()['cognito:username']);
     const subscription = API.graphql(
-        graphqlOperation(subscriptions.onSendMessage, {owner: prompt("Who am I?")})
+        graphqlOperation(subscriptions.onSendMessage, username)
     ).subscribe({
         next: ({provider, value}) => console.log("Received:", {provider, value})
     });
@@ -311,6 +324,7 @@ class App extends Component {
                         <ChangeCognitoAttributeForm/>
                         <button onClick={handleClickObserveInbox}>Observe Inbox</button>
                         <button onClick={handleClickSendMessage}>Send Message</button>
+                        <button onClick={handleClickListInbox}>List Inbox</button>
                         <button onClick={handleClickSendMessageBeast}>Send Message (Beast Mode)</button>
                         <RunCognitoAttributeVerificationButton/>
                     </div>

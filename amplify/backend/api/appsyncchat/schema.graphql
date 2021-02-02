@@ -3,7 +3,7 @@ type Message @model(subscriptions: { level: off})
     { allow: owner, operations: [update, read, delete] }
 ])
 @key(fields: ["id", "createdAt"])
-@key(name: "messagesByInbox", fields: ["inboxId", "createdAt"]) {
+@key(name: "messagesByInbox", fields: ["inboxId", "createdAt"], queryField: "messagesByInbox") {
     id: ID!
     inboxId: String
     senderSub: String!

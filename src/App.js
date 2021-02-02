@@ -205,6 +205,17 @@ const handleClickListInbox = async () => {
 
 }
 
+const handleClickListConversation = async () => {
+    const username = await Auth.currentSession().then(userData => userData.getIdToken().decodePayload()['cognito:username']);
+
+    return API.graphql(graphqlOperation(queries.listMessages, {
+            id: username + "#" + prompt("Who's the other user?"),
+            sortDirection: "DESC"
+        })
+    ).then(result => console.log("Inbox: ", result));
+
+}
+
 const handleClickObserveInbox = async () => {
     const username = await Auth.currentSession().then(userData => userData.getIdToken().decodePayload()['cognito:username']);
     const subscription = API.graphql(
@@ -325,6 +336,7 @@ class App extends Component {
                         <button onClick={handleClickObserveInbox}>Observe Inbox</button>
                         <button onClick={handleClickSendMessage}>Send Message</button>
                         <button onClick={handleClickListInbox}>List Inbox</button>
+                        <button onClick={handleClickListConversation}>List Conversation</button>
                         <button onClick={handleClickSendMessageBeast}>Send Message (Beast Mode)</button>
                         <RunCognitoAttributeVerificationButton/>
                     </div>

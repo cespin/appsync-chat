@@ -212,8 +212,26 @@ const handleClickListConversation = async () => {
             id: username + "#" + prompt("Who's the other user?"),
             sortDirection: "DESC"
         })
-    ).then(result => console.log("Inbox: ", result));
+    ).then(result => console.log("Conversation: ", result));
 
+}
+
+const handleClickRemoveNewestFromInbox = async () => {
+    const username = await Auth.currentSession().then(userData => userData.getIdToken().decodePayload()['cognito:username']);
+    return API.graphql(graphqlOperation(queries.listMessages, {
+        id: username + "#" + prompt("From the conversation with which user?"),
+        sortDirection: "DESC",
+        limit: 1
+    }))
+        .then(result => result.data.listMessages.items[0])
+        .then(toBeUpdated =>
+            API.graphql(graphqlOperation(mutations.updateMessage, {
+                input: {
+                    id: toBeUpdated.id,
+                    createdAt: toBeUpdated.createdAt,
+                    inboxId: null
+                }
+            })));
 }
 
 const handleClickObserveInbox = async () => {
@@ -337,6 +355,7 @@ class App extends Component {
                         <button onClick={handleClickSendMessage}>Send Message</button>
                         <button onClick={handleClickListInbox}>List Inbox</button>
                         <button onClick={handleClickListConversation}>List Conversation</button>
+                        <button onClick={handleClickRemoveNewestFromInbox}>Remove Newest Message from Inbox</button>
                         <button onClick={handleClickSendMessageBeast}>Send Message (Beast Mode)</button>
                         <RunCognitoAttributeVerificationButton/>
                     </div>

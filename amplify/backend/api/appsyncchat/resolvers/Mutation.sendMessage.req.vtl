@@ -28,8 +28,8 @@ $util.qr($senderMessage.put("id", "${senderIdentityValue}#${ctx.args.recipientSu
 $util.qr($recipientMessage.put("id", "${ctx.args.recipientSub}#${senderIdentityValue}"))
 $util.qr($senderMessage.put("s", "D"))
 $util.qr($recipientMessage.put("s", "U"))
-$util.qr($senderMessage.put("t", "${ctx.args.input}"))
-$util.qr($recipientMessage.put("t", "${ctx.args.input}"))
+$util.qr($senderMessage.put("t", "${ctx.args.text}"))
+$util.qr($recipientMessage.put("t", "${ctx.args.text}"))
 $util.qr($senderMessage.put("inboxId", "IX#${senderIdentityValue}"))
 $util.qr($recipientMessage.put("inboxId", "IX#${ctx.args.recipientSub}"))
 $util.qr($senderMessage.put("recipientSub", "${ctx.args.recipientSub}"))
@@ -38,6 +38,11 @@ $util.qr($senderMessage.put("owner", "${senderIdentityValue}"))
 $util.qr($recipientMessage.put("owner", "${ctx.args.recipientSub}"))
 $util.qr($senderMessage.put("senderSub", "${senderIdentityValue}"))
 $util.qr($recipientMessage.put("senderSub", "${senderIdentityValue}"))
+
+## [Start] The response **
+$util.qr($ctx.stash.put("recipientMessage", $recipientMessage))
+## [End] The response **
+
 {  
   "version": "2018-05-29",
   "operation": "BatchPutItem",

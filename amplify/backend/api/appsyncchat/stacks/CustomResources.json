@@ -67,6 +67,83 @@
           ]
         }
       }
+    },
+    "SubscriptionOnSendMessageResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "DependsOn": [
+        "LocalDatasource"
+      ],
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "LocalDatasource",
+            "Name"
+          ]
+        },
+        "TypeName": "Subscription",
+        "FieldName": "onSendMessage",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Subscription.onSendMessage.req.vtl",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Subscription.onSendMessage.res.vtl",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "LocalDatasource": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Description": {
+          "Fn::Join": [
+            " ",
+            [
+              "Local datasource for",
+              {
+                "Ref": "env"
+              }
+            ]
+          ]
+        },
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              "localdatasource",
+              "_",
+              {
+                "Ref": "env"
+              }
+            ]
+          ]
+        }     ,
+        "Type": "NONE"
+      }
     }
   },
   "Conditions": {

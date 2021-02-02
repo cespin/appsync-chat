@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const sendMessage = /* GraphQL */ `
-  mutation SendMessage($input: String!, $recipientSub: String!) {
-    sendMessage(input: $input, recipientSub: $recipientSub) {
+  mutation SendMessage($text: String!, $recipientSub: String!) {
+    sendMessage(text: $text, recipientSub: $recipientSub) {
       id
       inboxId
       senderSub

@@ -205,7 +205,7 @@ const handleClickObserveInbox = () => {
 
 const handleClickSendMessage = () => {
     API.graphql(graphqlOperation(mutations.sendMessage, {
-            input: prompt("Type in the message"),
+            text: prompt("Type in the message"),
             recipientSub: prompt("Type in the other user's sub ID")
         })
     );

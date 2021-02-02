@@ -255,7 +255,7 @@ const handleClickChangeMessageState = async () => {
 const handleClickObserveInbox = async () => {
     const username = await Auth.currentSession().then(userData => userData.getIdToken().decodePayload()['cognito:username']);
     const subscription = API.graphql(
-        graphqlOperation(subscriptions.onSendMessage, username)
+        graphqlOperation(subscriptions.onSendMessage, {owner: username})
     ).subscribe({
         next: ({provider, value}) => console.log("Received:", {provider, value})
     });
